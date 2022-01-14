@@ -1,3 +1,6 @@
+
+
+const cors = require('cors');
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -8,11 +11,21 @@ mongoose.connect(
   "mongodb+srv://merissab44:Tigers98@tillinft.jj0oh.mongodb.net/tillienft?retryWrites=true&w=majority",
   { useNewUrlParser: true }
 );
+
+app.use(express.json());
+app.use(cors());
 app.get('/', (req, res) => {
     res.send('You are connected!')
 })
-app.get("/insert", async (req, res) => {
-  const nft = new ListModel({ name: "Jessic", id: 2, price: 2.0, description: "test description", forSale: false });
+app.post("/insert", async (req, res) => {
+  
+  const name = req.body.name
+  const id = req.body.id
+  const price = req.body.price
+  const description = req.body.description
+  const forSale = req.body.forSale
+
+  const nft = new ListModel({ name: name, id: id , price: price, description: description, forSale: forSale });
   await nft.save();
   console.log(nft)
   res.send("Inserted DATA");
